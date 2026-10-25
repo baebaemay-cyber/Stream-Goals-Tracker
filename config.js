@@ -10,6 +10,6 @@ window.CONFIG = {
   YT_VIDEO_ID: "RgkoXU4BlOE",
 
   // repo ของคุณ รูปแบบ "username/repo" (ใช้ตอนกด "บันทึกขึ้นเว็บ" จากหน้าแอดมิน)
-  GH_REPO: "",
+  GH_REPO: "baebaemay/25102026",
   GH_BRANCH: "main"
 };
