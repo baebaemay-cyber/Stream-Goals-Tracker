@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Stream Goals Tracker</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700;800&display=swap">
+<style>
+:root{--bg0:#020a22;--bg1:#0b2a5b;--sky:#7fb8ee;--card:rgba(8,22,58,.66);--line:rgba(160,205,255,.26);--tx:#eaf3ff;--mut:#9db8de;--acc:#8fd0ff;--acc2:#4aa3ff;--yt:#ff4d4d;--sp:#1ed760;--mel:#2be36b;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100vh;font-family:'Prompt','Noto Sans Thai',system-ui,sans-serif;color:var(--tx);background:linear-gradient(180deg,#5fa8e8 0%,#0b2a5b 16%,#020a22 38%,#020a22 62%,#0b2a5b 84%,#7fb8ee 100%) fixed;background-color:var(--bg0)}
+.stars{position:fixed;inset:0;pointer-events:none;z-index:0;background-image:radial-gradient(1.2px 1.2px at 12% 18%,#fff,transparent),radial-gradient(1px 1px at 28% 60%,#cfe4ff,transparent),radial-gradient(1.4px 1.4px at 46% 12%,#fff,transparent),radial-gradient(1px 1px at 63% 44%,#dbeaff,transparent),radial-gradient(1.3px 1.3px at 78% 22%,#fff,transparent),radial-gradient(1px 1px at 90% 70%,#cfe4ff,transparent),radial-gradient(1.2px 1.2px at 8% 82%,#fff,transparent),radial-gradient(1px 1px at 55% 88%,#dbeaff,transparent);background-size:340px 340px;opacity:.85}
+.sp{position:fixed;z-index:0;pointer-events:none;width:26px;height:26px;background:#fff;clip-path:polygon(50% 0,58% 42%,100% 50%,58% 58%,50% 100%,42% 58%,0 50%,42% 42%);filter:drop-shadow(0 0 6px #bfe0ff);animation:tw 3.6s ease-in-out infinite}
+@keyframes tw{0%,100%{opacity:.35;transform:scale(.8)}50%{opacity:1;transform:scale(1.1)}}
+@media(prefers-reduced-motion:reduce){.sp{animation:none}}
+.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto;padding:20px 16px 48px}
+header{display:flex;align-items:center;gap:14px;justify-content:space-between;flex-wrap:wrap;margin-bottom:18px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:48px;height:48px;border-radius:50%;background:linear-gradient(145deg,var(--acc2),#1a4fa8);display:grid;place-items:center;box-shadow:0 0 18px rgba(74,163,255,.55)}
+h1{margin:0;font-size:22px;font-weight:800;letter-spacing:.02em}
+.sub{font-size:13px;color:var(--mut)}
+.btn{font-family:inherit;border:1px solid var(--line);background:rgba(74,163,255,.18);color:var(--tx);padding:9px 16px;border-radius:999px;font-weight:600;font-size:14px;cursor:pointer}
+.btn.pri{background:linear-gradient(135deg,#4aa3ff,#2a68d6);border-color:transparent}
+.btn:disabled{opacity:.5}
+.card{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:20px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 8px 30px rgba(0,0,10,.35)}
+.hero{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+@media(max-width:640px){.hero{grid-template-columns:1fr}}
+.chip{display:inline-block;padding:4px 12px;border-radius:999px;font-size:12px;font-weight:700;background:rgba(143,208,255,.16);color:var(--acc)}
+.big{font-size:44px;font-weight:800;margin:8px 0 2px;line-height:1.1}
+.mut{color:var(--mut);font-size:13px}
+.bar{height:12px;border-radius:999px;background:rgba(255,255,255,.1);overflow:hidden;margin-top:12px}
+.bar>i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#4aa3ff,#9fe0ff);transition:width .6s}
+.cd{font-variant-numeric:tabular-nums;font-size:38px;font-weight:800;letter-spacing:.03em;margin:8px 0 2px}
+.tip{background:linear-gradient(135deg,rgba(26,79,168,.55),rgba(5,20,60,.75));margin-bottom:16px}
+.tip b{display:block;font-size:18px;margin:8px 0 4px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.tab{font-family:inherit;border:1px solid var(--line);background:rgba(8,22,58,.5);color:var(--tx);padding:8px 18px;border-radius:999px;font-weight:600;cursor:pointer}
+.tab.on{background:linear-gradient(135deg,#4aa3ff,#2a68d6);border-color:transparent}
+.goal{margin-bottom:14px}
+.top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start}
+.pl{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:999px;font-size:13px;font-weight:700;background:rgba(255,255,255,.08)}
+.pl::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--c)}
+.gt{font-size:20px;font-weight:700;margin:8px 0 0;font-style:italic}
+.nums{text-align:right;font-weight:700;font-size:15px}
+.nums small{color:var(--mut);font-weight:500}
+.pb{position:relative;height:44px;border-radius:999px;background:rgba(255,255,255,.1);overflow:hidden;margin:14px 0}
+.pb>i{position:absolute;inset:0 auto 0 0;border-radius:999px;background:linear-gradient(90deg,#1a4fa8,#4aa3ff);transition:width .6s;min-width:44px}
+.pb span{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font-weight:700}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.done{border-color:#8fe3b0;box-shadow:0 0 24px rgba(80,230,150,.25)}
+.go{text-decoration:none;color:#fff}
+.edit{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+.edit label{font-size:12px;color:var(--mut);display:flex;flex-direction:column;gap:4px}
+.edit input{font-family:inherit;background:rgba(2,10,34,.7);color:var(--tx);border:1px solid var(--line);border-radius:12px;padding:8px 10px;font-size:14px;width:100%}
+.modal{position:fixed;inset:0;z-index:5;background:rgba(2,10,34,.75);display:grid;place-items:center;padding:16px}.modal[hidden]{display:none}.modal form{width:100%;max-width:340px;display:flex;flex-direction:column;gap:12px}.modal label{font-size:13px;color:var(--mut);display:flex;flex-direction:column;gap:4px}.modal input{font-family:inherit;background:rgba(2,10,34,.7);color:var(--tx);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:16px;width:100%}
+.note{font-size:12px;color:var(--mut);text-align:center;margin-top:18px}
+</style>
+</head>
+<body>
+<div class="stars"></div>
+<i class="sp" style="top:4%;left:6%"></i>
+<i class="sp" style="top:7%;right:7%;width:34px;height:34px;animation-delay:1s"></i>
+<i class="sp" style="top:30%;left:2%;width:20px;height:20px;animation-delay:2s"></i>
+<i class="sp" style="top:46%;right:2%;width:18px;height:18px;animation-delay:.5s"></i>
+<i class="sp" style="bottom:7%;left:9%;animation-delay:1.6s"></i>
+<i class="sp" style="bottom:4%;right:12%;width:22px;height:22px;animation-delay:2.4s"></i>
+
+<div class="wrap">
+<header>
+  <div class="brand">
+    <div class="logo"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg></div>
+    <div><h1>STREAM GOALS TRACKER</h1><div class="sub">ติดตามภารกิจยอดวิวและยอดสตรีมแบบเรียลไทม์</div></div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="card">
+    <span class="chip">ความคืบหน้ารวม</span>
+    <div class="big" id="ov">0 / 4</div>
+    <div class="mut">ภารกิจที่สำเร็จแล้ว</div>
+    <div class="bar"><i id="ovbar" style="width:0"></i></div>
+  </div>
+  <div class="card">
+    <span class="chip" id="cdlabel">เวลาที่เหลือ</span>
+    <div class="cd" id="cd">24:00:00</div>
+    <div class="mut">เริ่ม 25 ต.ค. 22:00 – สิ้นสุด 26 ต.ค. 22:00 (เวลาไทย)</div>
+  </div>
+</section>
+
+<section class="card tip">
+  <span class="chip">ข้อแนะนำสตรีม</span>
+  <b>ร่วมด้วยช่วยกันดันชาร์ต!</b>
+  <div class="mut" style="color:#cfe3ff">เปิดสตรีมบนความละเอียด 480p ขึ้นไป ปรับระดับเสียงเกิน 50% และอย่าลืมกดรับชมผ่านลิงก์ของภารกิจ!</div>
+</section>
+
+<div class="tabs" id="tabs"></div>
+<div id="list"></div>
+<div class="note" id="note"></div>
+</div>
+
+
+<script src="config.js"></script>
+<script>
+const C=window.CONFIG||{};
+const START=Date.parse(C.START),END=START+(C.HOURS||24)*36e5;
+const COL={YouTube:'#ff4d4d',Spotify:'#1ed760',Melon:'#2be36b'};
+let goals=[],filter='ทั้งหมด',loaded=false;
+const $=id=>document.getElementById(id),fmt=n=>Number(n||0).toLocaleString('en-US');
+const esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const safeUrl=u=>/^https?:\/\//i.test(u)?u:'#';
+function timeLeft(){const n=Date.now();
+  if(n<START){$('cdlabel').textContent='เริ่มภารกิจในอีก';return START-n}
+  $('cdlabel').textContent=n>=END?'ภารกิจสิ้นสุดแล้ว':'เวลาที่เหลือ';return Math.max(0,END-n)}
+function tick(){const ms=timeLeft(),s=Math.floor(ms/1000),p=x=>String(x).padStart(2,'0');
+  $('cd').textContent=p(Math.floor(s/3600))+':'+p(Math.floor(s%3600/60))+':'+p(s%60)}
+function hhmm(){return new Date().toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'})}
+async function loadData(){
+  try{
+    const r=await fetch('data.json?t='+Date.now(),{cache:'no-store'});
+    const d=await r.json();
+    const old=Object.fromEntries(goals.map(g=>[g.id,g]));
+    goals=d.goals.map(g=>({id:g.id,pl:g.platform,c:COL[g.platform]||'#4aa3ff',title:g.title,unit:g.unit,cur:+g.current||0,tgt:+g.target||1,url:g.url,upd:g.updated||'',auto:false}));
+    if(old['yt-views']&&old['yt-views'].auto){goals.forEach(g=>{const o=old[g.id];if(o&&o.auto){g.cur=o.cur;g.upd=o.upd;g.auto=true}})}
+    $('note').textContent='บางยอดอาจต้องรออัปเดตเป็นรายชั่วโมง เช่น Melon เนื่องจากข้อจำกัดของแพลตฟอร์ม';
+  }catch(e){ if(!goals.length)$('note').textContent='โหลดข้อมูลไม่สำเร็จ (ถ้าเปิดไฟล์จากเครื่อง ให้รันผ่านเซิร์ฟเวอร์ เช่น python3 -m http.server)'; }
+  loaded=true;
+}
+async function loadYT(){
+  if(!C.YT_API_KEY||!C.YT_VIDEO_ID)return;
+  try{
+    const u='https://www.googleapis.com/youtube/v3/videos?part=statistics&id='+encodeURIComponent(C.YT_VIDEO_ID)+'&key='+encodeURIComponent(C.YT_API_KEY);
+    const r=await fetch(u),d=await r.json(),st=d.items&&d.items[0]&&d.items[0].statistics;
+    if(!st)return;
+    goals.forEach(g=>{
+      if(g.id==='yt-views'){g.cur=+st.viewCount||0;g.auto=true;g.upd='อัตโนมัติ '+hhmm()}
+      if(g.id==='yt-likes'&&st.likeCount!==undefined){g.cur=+st.likeCount||0;g.auto=true;g.upd='อัตโนมัติ '+hhmm()}
+    });
+  }catch(e){}
+}
+function render(){
+  const done=goals.filter(g=>g.cur>=g.tgt).length,n=goals.length||1;
+  $('ov').textContent=done+' / '+goals.length;
+  $('ovbar').style.width=(done/n*100)+'%';
+  const names=['ทั้งหมด','YouTube','Spotify','Melon'];
+  $('tabs').innerHTML=names.map(x=>'<button class="tab'+(x===filter?' on':'')+'" data-t="'+x+'">'+x+'</button>').join('')+'<span class="mut" style="margin-left:auto">แสดงตามเป้าหมายเรียงลำดับด่วนที่สุด</span>';
+  const hrs=Math.max((END-Math.max(Date.now(),START))/36e5,0);
+  const list=goals.filter(g=>filter==='ทั้งหมด'||g.pl===filter).sort((a,b)=>(a.cur/a.tgt)-(b.cur/b.tgt));
+  $('list').innerHTML=list.map(g=>{
+    const pct=Math.min(100,g.cur/g.tgt*100),rem=Math.max(0,g.tgt-g.cur),pace=hrs>0?Math.ceil(rem/hrs):0;
+    return '<article class="card goal'+(g.cur>=g.tgt?' done':'')+'" style="--c:'+g.c+'">'+
+    '<div class="top"><div><span class="pl">'+esc(g.pl)+'</span><div class="gt">'+esc(g.title)+'</div></div>'+
+    '<div class="nums">'+fmt(g.cur)+' / '+fmt(g.tgt)+' <small>'+esc(g.unit)+'</small></div></div>'+
+    '<div class="pb"><i style="width:'+pct+'%"></i><span><b>'+esc(g.title)+'</b><b>'+pct.toFixed(1)+'%</b></span></div>'+
+    '<div class="row"><span class="mut">'+(g.cur>=g.tgt?'🎉 สำเร็จแล้ว!':'ขาดอีก '+fmt(rem)+' · ต้องทำให้ได้ ~'+fmt(pace)+'/ชม.')+(g.upd?'<br>อัปเดตล่าสุด: '+esc(g.upd):'')+'</span>'+
+    '<a class="btn pri go" target="_blank" rel="noopener" href="'+safeUrl(g.url)+'">STREAM NOW / ดูเลย ↗</a></div></article>'}).join('');
+}
+$('tabs').addEventListener('click',e=>{const t=e.target.dataset.t;if(t){filter=t;render()}});
+async function refresh(){await loadData();await loadYT();render()}
+refresh();tick();setInterval(tick,1000);setInterval(refresh,60000);
+</script>
+</body>
+</html>
