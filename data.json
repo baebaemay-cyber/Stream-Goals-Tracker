@@ -5,40 +5,40 @@
       "platform": "YouTube",
       "title": "YouTube – 5,000,000 Views",
       "unit": "VIEWS",
-      "current": 7215307,
+      "current": 8137075,
       "target": 10000000,
       "url": "https://youtu.be/RgkoXU4BlOE?si=k99MoVz7BJ_vkdA9",
-      "updated": "12:56"
+      "updated": "19:34"
     },
     {
       "id": "yt-likes",
       "platform": "YouTube",
       "title": "YouTube – 100,000 Likes",
       "unit": "LIKES",
-      "current": 73127,
+      "current": 76455,
       "target": 1000000,
       "url": "https://youtu.be/RgkoXU4BlOE?si=k99MoVz7BJ_vkdA9",
-      "updated": "12:55"
+      "updated": "19:35"
     },
     {
       "id": "sp",
       "platform": "Spotify",
       "title": "Spotify – 200,000 Streams",
       "unit": "STREAMS",
-      "current": 0,
+      "current": 42299,
       "target": 200000,
       "url": "https://open.spotify.com/track/5jC3lBWBcVdby76sqWwqAE?si=_vgrFDN3QKeo3rJIHrAFVg&utm_source=copy-link",
-      "updated": ""
+      "updated": "19:36"
     },
     {
       "id": "mel",
       "platform": "Melon",
       "title": "Melon – 5,000,000 Views",
       "unit": "VIEWS",
-      "current": 643185,
+      "current": 0,
       "target": 5000000,
       "url": "https://www.melon.com/album/detail.htm?albumId=15074721",
-      "updated": "12:58"
+      "updated": "19:35"
     }
   ]
 }
